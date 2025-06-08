@@ -34,7 +34,7 @@ public class UsersController : BaseApiController
         [FromQuery] string? country = null,
         [FromQuery] decimal? minSalary = null,
         [FromQuery] decimal? maxSalary = null,
-        [FromQuery] DateTime? birthDate = null)
+        [FromQuery] string? birthDate = null)
     {
 
         var users = await _userService.GetUsersAsync(

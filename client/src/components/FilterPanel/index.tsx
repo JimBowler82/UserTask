@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import RegistrationFilter from "../Filters/RegistrationFilter";
 import GenderFilter from "../Filters/GenderFilter";
 import CountryFilter from "../Filters/CountryFilter";
@@ -18,6 +18,17 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
       ...prevFilters,
       [filter]: value,
     }));
+  };
+
+  const clearFilters = () => {
+    setFilters?.({
+      registrationDate: undefined,
+      gender: "",
+      country: "",
+      minSalary: undefined,
+      maxSalary: undefined,
+      birthdate: undefined,
+    });
   };
 
   return (
@@ -42,18 +53,34 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
           }
         />
         <GenderFilter
+          value={filters?.gender || ""}
           onChange={(value: unknown) => handleFilterChange("gender", value)}
         />
         <CountryFilter
+          value={filters?.country || ""}
           onChange={(value: unknown) => handleFilterChange("country", value)}
         />
         <SalaryFilter
-          onChange={(value: unknown) => handleFilterChange("salary", value)}
+          onMinChange={(value: unknown) =>
+            handleFilterChange("minSalary", value)
+          }
+          onMaxChange={(value: unknown) =>
+            handleFilterChange("maxSalary", value)
+          }
         />
         <BirthDateFilter
           value={filters?.birthdate || null}
           onChange={(value: unknown) => handleFilterChange("birthdate", value)}
         />
+
+        <Button
+          color="info"
+          size="small"
+          sx={{ maxWidth: "120px" }}
+          onClick={clearFilters}
+        >
+          Clear All
+        </Button>
       </Stack>
     </Stack>
   );

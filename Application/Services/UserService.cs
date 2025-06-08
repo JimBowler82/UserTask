@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Application.Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Services;
@@ -27,29 +28,25 @@ public class UserService
         string? country,
         decimal? minSalary,
         decimal? maxSalary,
-        DateTime? birthDate
+        string? birthDate
     )
     {
-        DateTime? parsedBirthDate = null;
-        if (birthDate.HasValue)
-        {
-            parsedBirthDate = birthDate.Value.Date;
-        }
+
 
         var query = _context.Users
             .Where(u =>
                 (string.IsNullOrEmpty(search) ||
-                    (u.First_name != null && u.First_name.Contains(search)) ||
-                    (u.Last_name != null && u.Last_name.Contains(search)) ||
-                    (u.Email != null && u.Email.Contains(search)) ||
-                    (u.Comments != null && u.Comments.Contains(search)) ||
-                    (u.Title != null && u.Title.Contains(search))) &&
+                    (u.First_name != null && u.First_name.ToLower().Contains(search.ToLower())) ||
+                    (u.Last_name != null && u.Last_name.ToLower().Contains(search.ToLower())) ||
+                    (u.Email != null && u.Email.ToLower().Contains(search.ToLower())) ||
+                    (u.Comments != null && u.Comments.ToLower().Contains(search.ToLower())) ||
+                    (u.Title != null && u.Title.ToLower().Contains(search.ToLower()))) &&
                 (!registrationDate.HasValue || (u.Registration_dttm.HasValue && u.Registration_dttm.Value.Date == registrationDate.Value.Date)) &&
-                (string.IsNullOrEmpty(gender) || u.Gender == gender) &&
-                (string.IsNullOrEmpty(country) || u.Country == country) &&
+                (string.IsNullOrEmpty(gender) || (u.Gender != null && u.Gender.ToLower() == gender.ToLower())) &&
+                (string.IsNullOrEmpty(country) || (u.Country != null && u.Country.ToLower() == country.ToLower())) &&
                 (!minSalary.HasValue || (u.Salary.HasValue && (decimal)u.Salary.Value >= minSalary.Value)) &&
                 (!maxSalary.HasValue || (u.Salary.HasValue && (decimal)u.Salary.Value <= maxSalary.Value)) &&
-                (!parsedBirthDate.HasValue || (u.Birthdate != null && DateTime.Parse(u.Birthdate).Date == parsedBirthDate.Value)))
+                (string.IsNullOrEmpty(birthDate) || (u.Birthdate != null && u.Birthdate == birthDate)))
             .AsQueryable();
 
         if (sortOrder?.ToLower() == "desc")

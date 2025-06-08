@@ -3,6 +3,16 @@ import { Stack, Typography } from "@mui/material";
 import { useGetUsersQuery } from "./lib/queries/user";
 import FilterPanel from "./components/FilterPanel";
 import UserList from "./components/UserList.tsx";
+import { format } from "date-fns";
+
+const convertBirthDate = (
+  dateString: string | undefined
+): string | undefined => {
+  if (!dateString) return undefined;
+  //Convert to MM/dd/yyyy
+  const date = format(new Date(dateString), "M/d/yyyy");
+  return String(date);
+};
 
 const App: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(50);
@@ -15,7 +25,8 @@ const App: React.FC = () => {
     registrationDate: undefined,
     gender: "",
     country: "",
-    salary: undefined,
+    minSalary: undefined,
+    maxSalary: undefined,
     birthdate: undefined,
   });
 
@@ -28,11 +39,11 @@ const App: React.FC = () => {
     registrationDate: filters.registrationDate || "",
     gender: filters.gender || "",
     country: filters.country || "",
-    salary: filters.salary || undefined,
-    birthdate: filters.birthdate || "",
+    minSalary: filters.minSalary || undefined,
+    maxSalary: filters.maxSalary || undefined,
+    birthdate: convertBirthDate(filters.birthdate || ""),
   });
 
-  console.log("Users data:", userData);
   const handlePaginationChange = useCallback(
     (newPage: number, newPageSize: number) => {
       setPageSize((old) => (newPageSize === old ? old : newPageSize));

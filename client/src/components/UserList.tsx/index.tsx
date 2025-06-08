@@ -65,7 +65,7 @@ const UserList: React.FC<UserListProps> = ({
       sx={{
         flex: 1,
         overflow: "hidden",
-        maxHeight: "90%",
+        maxHeight: "80%",
       }}
     >
       <DataGrid
@@ -85,7 +85,7 @@ const UserList: React.FC<UserListProps> = ({
         showToolbar
         paginationMode="server"
         sortingMode="server"
-        rowCount={users?.totalCount}
+        rowCount={users?.totalCount || 0}
         onPaginationModelChange={handlePaginationChange}
         onSortModelChange={(model) => {
           const { field, sort } = model[0] || {};

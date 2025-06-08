@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 
 interface GenderFilterProps {
   value?: string;
@@ -7,25 +7,22 @@ interface GenderFilterProps {
 
 const GenderFilter: React.FC<GenderFilterProps> = ({ onChange, value }) => {
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel size="small" id="genderLabel">
-          Gender
-        </InputLabel>
-        <Select
-          size="small"
-          labelId="genderlabel"
-          id="genderselect"
-          value={value}
-          label="Gender"
-          onChange={(e) => onChange?.(e.target.value)}
-        >
-          <MenuItem value={"male"}>Male</MenuItem>
-          <MenuItem value={"female"}>Female</MenuItem>
-          <MenuItem value={""}>Clear</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
+    <Autocomplete
+      disablePortal
+      size="small"
+      options={["Male", "Female"]}
+      onChange={(e, newValue, reason) => {
+        console.log("Selected gender:", { e, newValue, reason });
+        if (reason === "clear") {
+          newValue = "";
+        }
+
+        onChange?.(newValue);
+      }}
+      value={value || ""}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Gender" />}
+    />
   );
 };
 

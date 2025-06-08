@@ -23,7 +23,8 @@ interface GetUsersParams {
   registrationDate?: string;
   gender?: string;
   country?: string;
-  salary?: number;
+  minSalary?: number;
+  maxSalary?: number;
   birthdate?: string;
 }
 
@@ -40,6 +41,7 @@ interface UserFilters {
   registrationDate?: string;
   gender?: string;
   country?: string;
-  salary?: number;
+  minSalary?: number;
+  maxSalary?: number;
   birthdate?: string;
 }

@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { countryList } from "../../data/countries";
 
 interface CountryFilterProps {
@@ -8,28 +8,22 @@ interface CountryFilterProps {
 
 const CountryFilter: React.FC<CountryFilterProps> = ({ onChange, value }) => {
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel size="small" id="countryLabel">
-          Country
-        </InputLabel>
-        <Select
-          size="small"
-          labelId="countrylabel"
-          id="countrySelect"
-          value={value}
-          label="Country"
-          onChange={(e) => onChange?.(e.target.value)}
-        >
-          <MenuItem value={""}>Clear</MenuItem>
-          {countryList.map((country) => (
-            <MenuItem key={country} value={country}>
-              {country}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <Autocomplete
+      disablePortal
+      size="small"
+      options={countryList}
+      onChange={(e, newValue, reason) => {
+        console.log("Selected country:", { e, newValue, reason });
+        if (reason === "clear") {
+          newValue = "";
+        }
+
+        onChange?.(newValue);
+      }}
+      value={value || ""}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Country" />}
+    />
   );
 };
 
