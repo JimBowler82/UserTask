@@ -19,20 +19,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
+var logger = services.GetRequiredService<ILogger<Program>>();
+
 try
 {
     var context = services.GetRequiredService<AppDbContext>();
     await context.Database.MigrateAsync();
 
-    // Seed the database with initial data
     await DbSeeder.SeedData(context);
+    logger.LogInformation("Database seeded successfully.");
 }
 catch (Exception ex)
 {
-    var logger = services.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "An error occurred while seeding the database.");
 }
 

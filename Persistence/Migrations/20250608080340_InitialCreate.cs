@@ -17,13 +17,15 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
-                    LastName = table.Column<string>(type: "TEXT", nullable: true),
+                    First_name = table.Column<string>(type: "TEXT", nullable: true),
+                    Last_name = table.Column<string>(type: "TEXT", nullable: true),
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Gender = table.Column<string>(type: "TEXT", nullable: true),
+                    Ip_address = table.Column<string>(type: "TEXT", nullable: true),
+                    Cc = table.Column<string>(type: "TEXT", nullable: true),
                     Country = table.Column<string>(type: "TEXT", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Birthdate = table.Column<string>(type: "TEXT", nullable: true),
+                    Registration_dttm = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Salary = table.Column<double>(type: "REAL", nullable: true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Comments = table.Column<string>(type: "TEXT", nullable: true)

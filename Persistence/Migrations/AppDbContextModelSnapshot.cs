@@ -23,7 +23,10 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<string>("Birthdate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Cc")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Comments")
@@ -35,16 +38,19 @@ namespace Persistence.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("First_name")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Ip_address")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("RegistrationDate")
+                    b.Property<string>("Last_name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Registration_dttm")
                         .HasColumnType("TEXT");
 
                     b.Property<double?>("Salary")
