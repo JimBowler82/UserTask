@@ -1,7 +1,7 @@
+import { useCallback, useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import CustomToolbar from "../CustomToolbar";
-import { useState } from "react";
 
 interface UserListProps {
   users?: PagedResponse<User>;
@@ -50,14 +50,21 @@ const UserList: React.FC<UserListProps> = ({
     page,
     pageSize,
   });
+  const [countRef, setCountRef] = useState<number>(0);
 
-  const handlePaginationChange = (model: {
-    page: number;
-    pageSize: number;
-  }) => {
-    setPaginationModel(model); // Update local state
-    onPaginationChange?.(model.page, model.pageSize); // Notify parent component
-  };
+  const handlePaginationChange = useCallback(
+    (model: { page: number; pageSize: number }) => {
+      setPaginationModel(model); // Update local state
+      onPaginationChange?.(model.page, model.pageSize); // Notify parent component
+    },
+    [onPaginationChange]
+  );
+
+  useEffect(() => {
+    if (users?.totalCount !== undefined) {
+      setCountRef(users.totalCount);
+    }
+  }, [users?.totalCount]);
 
   return (
     <Stack
@@ -85,7 +92,7 @@ const UserList: React.FC<UserListProps> = ({
         showToolbar
         paginationMode="server"
         sortingMode="server"
-        rowCount={users?.totalCount || 0}
+        rowCount={countRef}
         onPaginationModelChange={handlePaginationChange}
         onSortModelChange={(model) => {
           const { field, sort } = model[0] || {};

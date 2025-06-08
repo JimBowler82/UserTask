@@ -8,5 +8,6 @@ export const useGetUsersQuery = (params?: GetUsersParams) => {
       const res = await getUsers(params);
       return res.data;
     },
+    refetchOnWindowFocus: false,
   });
 };
