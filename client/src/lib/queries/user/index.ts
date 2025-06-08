@@ -6,7 +6,7 @@ export const useGetUsersQuery = (params?: GetUsersParams) => {
     queryKey: ["users", params],
     queryFn: async () => {
       const res = await getUsers(params);
-      return res.data.items;
+      return res.data;
     },
   });
 };

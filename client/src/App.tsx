@@ -1,35 +1,84 @@
+import { useCallback, useState } from "react";
+import { Stack, Typography } from "@mui/material";
 import { useGetUsersQuery } from "./lib/queries/user";
+import FilterPanel from "./components/FilterPanel";
+import UserList from "./components/UserList.tsx";
 
-function App() {
-  const { data: users, isPending } = useGetUsersQuery({
-    page: 1,
-    pageSize: 10,
+const App: React.FC = () => {
+  const [pageSize, setPageSize] = useState<number>(50);
+  const [page, setPage] = useState<number>(0);
+  const [sortModel, setSortModel] = useState<
+    { field: string; sort: "asc" | "desc" }[]
+  >([]);
+  const [searchText, setSearchText] = useState<string>("");
+  const [filters, setFilters] = useState<UserFilters>({
+    registrationDate: undefined,
+    gender: "",
+    country: "",
+    salary: undefined,
+    birthdate: undefined,
   });
-  if (isPending) {
-    return <p>Loading...</p>;
-  }
+
+  const { data: userData, isPending } = useGetUsersQuery({
+    page: page + 1, // API is 1-indexed
+    pageSize: pageSize,
+    sortColumn: sortModel[0]?.field,
+    sortOrder: sortModel[0]?.sort,
+    search: searchText,
+    registrationDate: filters.registrationDate || "",
+    gender: filters.gender || "",
+    country: filters.country || "",
+    salary: filters.salary || undefined,
+    birthdate: filters.birthdate || "",
+  });
+
+  console.log("Users data:", userData);
+  const handlePaginationChange = useCallback(
+    (newPage: number, newPageSize: number) => {
+      setPageSize((old) => (newPageSize === old ? old : newPageSize));
+      setPage((old) => (newPage === old ? old : newPage));
+    },
+    [setPageSize, setPage]
+  );
+
+  const handleSortModelChange = useCallback(
+    (newSortModel: { field: string; sort: "asc" | "desc" }[]) => {
+      const { field, sort } = newSortModel[0] || {};
+      setSortModel([{ field: field || "", sort: sort || "asc" }]);
+    },
+    [setSortModel]
+  );
+
+  const handleFilterModelChange = useCallback(
+    (filterModel: { quickFilterValues: string[] }) => {
+      const { quickFilterValues = [] } = filterModel ?? {};
+      const combinedSearchText = quickFilterValues.join(" ");
+      setSearchText(combinedSearchText);
+    },
+    [setSearchText]
+  );
 
   return (
-    <>
-      <h3>User Task</h3>
-      {users?.map((user) => (
-        <div key={user.id}>
-          <p>
-            {user.first_name} {user.last_name} - {user.email}
-          </p>
-        </div>
-      ))}
+    <Stack
+      direction="column"
+      gap="10px"
+      sx={{ padding: "30px", height: "100%" }}
+    >
+      <Typography component={"h1"}>User Task</Typography>
 
-      {users?.length === 0 && <p>No users found.</p>}
-      <p>Total Users: {users?.length}</p>
-      <p>Data fetched from: http://localhost:5253/api/users</p>
-      <p>Data fetched at: {new Date().toLocaleTimeString()}</p>
-      <p>Data fetched on: {new Date().toLocaleDateString()}</p>
-      <p>Data fetched using Axios.</p>
-      <p>Data fetched using TypeScript.</p>
-      <p>Data fetched using React.</p>
-    </>
+      <FilterPanel filters={filters} setFilters={setFilters} />
+
+      <UserList
+        users={userData}
+        page={page}
+        pageSize={pageSize}
+        isLoading={isPending}
+        onPaginationChange={handlePaginationChange}
+        onSortModelChange={handleSortModelChange}
+        onFilterModelChange={handleFilterModelChange}
+      />
+    </Stack>
   );
-}
+};
 
 export default App;

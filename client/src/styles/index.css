@@ -1,0 +1,21 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: #f0f0f0;
+  color: #333;
+  display: flex; /* Ensure the body uses flexbox */
+  flex-direction: column; /* Stack children vertically */
+  flex-grow: 0;
+}
+
+div#root {
+  height: 100%; /* Ensure the root container takes full height */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
+  flex-grow: 0;
+}

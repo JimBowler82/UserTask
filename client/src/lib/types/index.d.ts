@@ -23,7 +23,7 @@ interface GetUsersParams {
   registrationDate?: string;
   gender?: string;
   country?: string;
-  minSalary?: number;
+  salary?: number;
   birthdate?: string;
 }
 
@@ -34,4 +34,12 @@ interface PagedResponse<T> {
   totalCount: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
+}
+
+interface UserFilters {
+  registrationDate?: string;
+  gender?: string;
+  country?: string;
+  salary?: number;
+  birthdate?: string;
 }
