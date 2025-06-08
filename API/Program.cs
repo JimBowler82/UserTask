@@ -10,6 +10,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors();
+
 builder.Services.AddScoped<UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -29,7 +31,14 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors(opt =>
+{
+    opt.AllowAnyOrigin()
+       .AllowAnyMethod().WithOrigins("http://localhost:3000", "https://localhost:3000");
+});
+
 app.MapControllers();
+
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var logger = services.GetRequiredService<ILogger<Program>>();
