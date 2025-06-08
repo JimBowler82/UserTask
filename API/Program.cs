@@ -1,3 +1,4 @@
+using Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -9,13 +10,23 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddOpenApi();
+builder.Services.AddScoped<UserService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "User API V1");
+        c.RoutePrefix = "swagger";
+    });
 }
 
 app.MapControllers();
