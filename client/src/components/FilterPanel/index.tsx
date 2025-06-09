@@ -12,8 +12,6 @@ interface FilterPanelProps {
 
 const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
   const handleFilterChange = (filter: keyof UserFilters, value: unknown) => {
-    console.log(`Filter changed: ${filter} = ${value}`);
-
     setFilters?.((prevFilters) => ({
       ...prevFilters,
       [filter]: value,

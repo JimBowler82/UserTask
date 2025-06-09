@@ -54,8 +54,8 @@ const UserList: React.FC<UserListProps> = ({
 
   const handlePaginationChange = useCallback(
     (model: { page: number; pageSize: number }) => {
-      setPaginationModel(model); // Update local state
-      onPaginationChange?.(model.page, model.pageSize); // Notify parent component
+      setPaginationModel(model);
+      onPaginationChange?.(model.page, model.pageSize);
     },
     [onPaginationChange]
   );

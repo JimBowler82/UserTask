@@ -11,8 +11,7 @@ const GenderFilter: React.FC<GenderFilterProps> = ({ onChange, value }) => {
       disablePortal
       size="small"
       options={["Male", "Female"]}
-      onChange={(e, newValue, reason) => {
-        console.log("Selected gender:", { e, newValue, reason });
+      onChange={(_e, newValue, reason) => {
         if (reason === "clear") {
           newValue = "";
         }

@@ -12,8 +12,7 @@ const CountryFilter: React.FC<CountryFilterProps> = ({ onChange, value }) => {
       disablePortal
       size="small"
       options={countryList}
-      onChange={(e, newValue, reason) => {
-        console.log("Selected country:", { e, newValue, reason });
+      onChange={(_e, newValue, reason) => {
         if (reason === "clear") {
           newValue = "";
         }
